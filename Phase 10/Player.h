@@ -20,6 +20,7 @@ public:
     void sortHand();
     void addCardToHand(Card);
     void displayHand();
+    Card removeCard(int);
 private:
     int score;
     int phase;

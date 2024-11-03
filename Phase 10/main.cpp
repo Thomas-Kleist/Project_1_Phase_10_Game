@@ -12,6 +12,7 @@
 #include "Display.h"
 #include "Card.h"
 #include "Player.h"
+#include "Deck.h"
 
 using namespace std;
 
@@ -23,28 +24,33 @@ int main(int argc, char** argv) {
     Display::PrintUnderlined("Underline");
     Display::NewLine();
    
+    Deck *deck = new Deck();
+    deck->shuffleDraw();
+    
     Player *player1 = new Player();
-    
-    player1->addCardToHand(*(new Card(2, "Blue")));
-    player1->addCardToHand(*(new Card(4, "Blue")));
-    player1->addCardToHand(*(new Card(3, "Blue")));
-    player1->addCardToHand(*(new Card(2, "Blue")));
-    
+    deck->deal(player1);
+
+    Display::PrintBold("Player 1");
+    Display::NewLine();
     player1->displayHand();
     
-//    list<Card> cards;
-//        
-//    cards.push_back(*(new Card(13)));
-//    cards.push_back(*(new Card(2, "Blue")));
-//    cards.push_back(*(new Card(4, "Yellow")));
-//    cards.push_back(*(new Card(0)));
-//
-//    Display::NewLine();
-//    Display::PrintCards(cards);
+    Player *player2 = new Player();
+    deck->deal(player2);
+
+    Display::PrintBold("Player 2");
+    Display::NewLine();
+    player2->displayHand();
+    
+    try {
+        Display::PrintCards(player1->removeCard(2));
+    } catch (...) {
+        Display::Print("Index out of bounds");
+        Display::NewLine();
+    }
+    
+    player1->displayHand();
 
     Display::Clear();
-
-//    Display::PrintCards(cards);
     
     return 0;
 }
