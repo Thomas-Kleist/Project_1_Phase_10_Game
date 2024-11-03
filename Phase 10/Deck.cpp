@@ -10,7 +10,7 @@
 #include "Player.h"
 #include <random>       // std::default_random_engine
 #include <chrono>       // std::chrono::system_clock
-
+#include "Display.h"
 
 Deck::Deck() {
     // Push number cards
@@ -54,15 +54,30 @@ void Deck::deal(Player *player) {
     }
 }
 
-Card drawFromDiscard() {
-    
+void Deck::drawPiles() {
+    std::list<Card> toDisplay;
+    toDisplay.push_front(discardPile.top());
+    toDisplay.push_front(*(new Card(0)));
+    Display::PrintCards(toDisplay);
+    Display::BeginColor("Black");
+    Display::Print(" Draw  Discard");
+    Display::NewLine();
 }
 
-Card drawFromDrawPile() {
-    
+
+Card Deck::drawFromDiscard() {
+    Card toReturn = discardPile.top();
+    discardPile.pop();
+    return toReturn;
 }
 
-void discardCard(Card) {
-    
+Card Deck::drawFromDrawPile() {
+    Card toReturn = drawPile.front();
+    drawPile.pop_front();
+    return toReturn;
+}
+
+void Deck::discardCard(Card card) {
+    discardPile.push(card);
 }
 
