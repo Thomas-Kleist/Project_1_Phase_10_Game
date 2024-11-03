@@ -14,17 +14,19 @@
 class Player {
 public:
     Player();
-    Player(const Player& orig);
     virtual ~Player();
     
     void sortHand();
     void addCardToHand(Card);
     void displayHand();
     Card removeCard(int);
+    void endRound();
+    bool getLayDown() { return layDown; }
 private:
     int score;
     int phase;
     std::list<Card> hand;
+    bool layDown;
 };
 
 #endif /* PLAYER_H */

@@ -74,6 +74,17 @@ Card Deck::drawFromDiscard() {
 Card Deck::drawFromDrawPile() {
     Card toReturn = drawPile.front();
     drawPile.pop_front();
+    
+    if (drawPile.empty()) {
+        while(discardPile.empty() == false) {
+            drawPile.push_front(discardPile.top());
+            discardPile.pop();
+        }
+        shuffleDraw();
+        discardPile.push(drawPile.front());
+        drawPile.pop_front();
+    }
+    
     return toReturn;
 }
 

@@ -15,9 +15,7 @@
 Player::Player() {
     score = 0;
     phase = 1;
-}
-
-Player::Player(const Player& orig) {
+    layDown = false;
 }
 
 Player::~Player() {

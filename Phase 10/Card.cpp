@@ -10,17 +10,20 @@
 
 Card::Card(int faceValue) {
     this->faceValue = faceValue;
+    this->phaseValue = faceValue;
     this->color = "Black";
 }
 
 Card::Card(int faceValue, std::string colorValue) {
     this->faceValue = faceValue;
+    this->phaseValue = faceValue;
     this->color = colorValue;
 }
 
 Card::Card(const Card& orig) {
     // Copy Values
     this->faceValue = orig.faceValue;
+    this->phaseValue = orig.phaseValue;
     this->color = orig.color;
 }
 

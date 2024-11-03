@@ -66,7 +66,7 @@ class Display {
             // print upper middle
             for (Card card : cards) {
                 BeginColor(card.getColor());
-                Print("+    + ");
+                Print("|    | ");
             }
             NewLine();
             // print display value
@@ -80,7 +80,7 @@ class Display {
             // print lower middle
             for (Card card : cards) {
                 BeginColor(card.getColor());
-                Print("+    + ");
+                Print("|    | ");
             }
             NewLine();
             // print bottom
