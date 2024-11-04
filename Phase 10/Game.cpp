@@ -9,6 +9,8 @@
 #include "Display.h"
 #include <iostream>
 #include "Group.h"
+#include "Run.h"
+#include "ColorPhase.h"
 
 Game::Game() {    
     player1 = new Player();
@@ -82,7 +84,7 @@ bool Game::discard(int player) {
 bool Game::layDown(int player) {
     Player *currentPlayer = (player == 1)?player1:player2;
 
-    Phase *phase = new Group(3);
+    Phase *phase = new ColorPhase(4);
     
     for (int i = 0; i < phase->getRequiredSize(); i++) {
         Display::Print("Select card you would like to add to ");

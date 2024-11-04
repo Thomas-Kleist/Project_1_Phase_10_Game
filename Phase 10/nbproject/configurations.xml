@@ -6,12 +6,14 @@
                    projectFiles="true">
       <itemPath>Card.h</itemPath>
       <itemPath>Color.h</itemPath>
+      <itemPath>ColorPhase.h</itemPath>
       <itemPath>Deck.h</itemPath>
       <itemPath>Display.h</itemPath>
       <itemPath>Game.h</itemPath>
       <itemPath>Group.h</itemPath>
       <itemPath>Phase.h</itemPath>
       <itemPath>Player.h</itemPath>
+      <itemPath>Run.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -22,11 +24,13 @@
                    projectFiles="true">
       <itemPath>Card.cpp</itemPath>
       <itemPath>Color.cpp</itemPath>
+      <itemPath>ColorPhase.cpp</itemPath>
       <itemPath>Deck.cpp</itemPath>
       <itemPath>Game.cpp</itemPath>
       <itemPath>Group.cpp</itemPath>
       <itemPath>Phase.cpp</itemPath>
       <itemPath>Player.cpp</itemPath>
+      <itemPath>Run.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -59,6 +63,10 @@
       </item>
       <item path="Color.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="ColorPhase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ColorPhase.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Deck.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Deck.h" ex="false" tool="3" flavor2="0">
@@ -80,6 +88,10 @@
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Run.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Run.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -112,6 +124,10 @@
       </item>
       <item path="Color.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="ColorPhase.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="ColorPhase.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Deck.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Deck.h" ex="false" tool="3" flavor2="0">
@@ -133,6 +149,10 @@
       <item path="Player.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Player.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Run.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Run.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
