@@ -72,6 +72,13 @@ bool Run::addCard(Card card) {
     return false;
 }
 
+void Run::addAvailableCards (std::set<std::string>& setOfCards) {
+    if (!empty()) {
+        if (cards.front().getPhaseValue() > 1) setOfCards.insert(std::to_string(cards.front().getPhaseValue()-1));
+        if (cards.back().getPhaseValue() < 12) setOfCards.insert(std::to_string(cards.back().getPhaseValue()+1));
+    }
+}
+
 void Run::printType() {
     Display::Print("Run of ");
     Display::Print(requiredSize);

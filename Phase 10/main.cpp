@@ -7,12 +7,7 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <list>
-#include <algorithm>
 #include "Display.h"
-#include "Card.h"
-#include "Player.h"
-#include "Deck.h"
 #include "Game.h"
 
 using namespace std;

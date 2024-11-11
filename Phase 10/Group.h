@@ -20,6 +20,7 @@ public:
         Display::Print("Group of ");
         Display::Print(requiredSize);
     };
+    void addAvailableCards (std::set<std::string>& setOfCards) { if (!empty()) setOfCards.insert(cards.front().getDisplayValue()); };
 private:
 
 };

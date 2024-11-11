@@ -15,7 +15,8 @@ public:
     explicit Run(int x) : Phase(x) { }
     virtual ~Run();
     bool addCard(Card);
-    void printType() override;
+    void printType();
+    void addAvailableCards (std::set<std::string>& setOfCards);
 private:
 
 };

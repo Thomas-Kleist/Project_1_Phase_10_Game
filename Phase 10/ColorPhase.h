@@ -17,6 +17,7 @@ public:
     virtual ~ColorPhase();
     bool addCard(Card);
     void printType() override;
+    void addAvailableCards (std::set<std::string>& setOfCards) { if (!empty()) setOfCards.insert(color); }
 private:
     std::string color;
 };

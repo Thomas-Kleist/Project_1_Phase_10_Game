@@ -10,6 +10,8 @@
 
 #include "Card.h"
 #include <list>
+#include <set>
+#include <string>
 
 class Phase {
 public:
@@ -21,6 +23,7 @@ public:
     virtual void printType();
     bool empty() { return cards.empty(); }
     Card removeCard();
+    virtual void addAvailableCards (std::set<std::string>& setOfCards) {};
 protected:
     int requiredSize;
     std::list<Card> cards;

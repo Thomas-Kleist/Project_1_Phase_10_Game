@@ -162,6 +162,19 @@ bool Game::layDown(int player) {
 
 bool Game::hit(int player) {
     Player *currentPlayer = (player == 1)?player1:player2;
+    
+    std::set<std::string> availableToPlay;
+    for (Phase *phase : activePhases) {
+        phase->addAvailableCards(availableToPlay);
+    }
+    Display::Print("The available cards to play are: ");
+    for (std::string move : availableToPlay)
+    {
+        Display::Print(move);
+        Display::Print(", ");
+    }
+    Display::NewLine();
+    
 
     Display::Print("Select Phase to Hit On (Press 0 to cancel):");
     Display::NewLine();
