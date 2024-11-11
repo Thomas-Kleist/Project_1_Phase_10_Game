@@ -10,6 +10,8 @@
 
 #include "Deck.h"
 #include "Player.h"
+#include "Phase.h"
+#include <list>
 
 class Game {
 public:
@@ -20,11 +22,17 @@ public:
     void endRound();
     void drawFromPile(int);
     bool discard(int);
+    bool fillPhase(int, Phase*);
     bool layDown(int);
+    bool hit(int);
+    void printPhase(int);
+    void printActivePhases();
+    std::list<Phase*> getPhase(int);
 private:
     Player *player1;
     Player *player2;
     Deck *deck;
+    std::list<Phase*> activePhases;
 };
 
 #endif /* GAME_H */

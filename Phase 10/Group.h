@@ -9,13 +9,17 @@
 #define GROUP_H
 
 #include "Phase.h"
+#include "Display.h"
 
 class Group : public Phase {
 public:
     explicit Group(int x) : Phase(x) { }
     virtual ~Group();
     bool addCard(Card);
-    void printType();
+    void printType() override {
+        Display::Print("Group of ");
+        Display::Print(requiredSize);
+    };
 private:
 
 };

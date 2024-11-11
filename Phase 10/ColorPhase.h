@@ -16,7 +16,7 @@ public:
     explicit ColorPhase(int x) : Phase(x) { }
     virtual ~ColorPhase();
     bool addCard(Card);
-    void printType();
+    void printType() override;
 private:
     std::string color;
 };

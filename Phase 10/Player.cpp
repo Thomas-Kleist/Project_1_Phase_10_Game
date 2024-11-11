@@ -1,6 +1,6 @@
 /* 
  * File:   Player.cpp
- * Author: tfkbr
+ * Author: Thomas Kleist
  * 
  * Created on November 2, 2024, 3:06 PM
  */
@@ -14,7 +14,7 @@
 
 Player::Player() {
     score = 0;
-    phase = 1;
+    phase = 0;
     layDown = false;
 }
 
@@ -54,10 +54,18 @@ void Player::displayHand() {
 }
 
 Card Player::removeCard(int pos) {
-    if (pos < 0 || pos > hand.size()) throw 0;
+    if (pos < 0 || pos >= hand.size()) throw "Out of Range";
     std::list<Card>::iterator it = hand.begin();
     std:advance(it, pos);
     Card toReturn = *it;
     hand.erase(it);
     return toReturn;
+}
+
+void Player::endRound() {
+    while (!hand.empty()) {
+        score += hand.front().getPointValue();
+        hand.pop_front();
+    }
+    layDown = false;
 }

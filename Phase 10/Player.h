@@ -22,6 +22,11 @@ public:
     Card removeCard(int);
     void endRound();
     bool getLayDown() { return layDown; }
+    void setLayDown() { layDown = true; };
+    int getCurrentPhase() { return phase; }
+    void increasePhase() { phase++; }
+    int getScore() { return score; }
+    bool handEmpty() { return hand.empty(); }
 private:
     int score;
     int phase;

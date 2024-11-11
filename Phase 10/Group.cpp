@@ -41,11 +41,6 @@ bool Group::addCard(Card card) {
     return false;
 }
 
-void Group::printType() {
-    Display::Print("Group of ");
-    Display::Print(requiredSize);
-}
-
 Group::~Group() {
 }
 

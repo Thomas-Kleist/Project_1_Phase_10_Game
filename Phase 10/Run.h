@@ -15,7 +15,7 @@ public:
     explicit Run(int x) : Phase(x) { }
     virtual ~Run();
     bool addCard(Card);
-    void printType();
+    void printType() override;
 private:
 
 };
