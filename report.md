@@ -76,9 +76,22 @@ The following screenshots are a sample of a player drawing a card, then laying d
     * Non-mutating Algorithms
         - `std::for_each` is used to display all the cards in a list. This is in `Display.h` line 61, 67, 73, 81, 87.
     * Mutating Algorithms
-        - `std::shuffle` is used to shuffle the draw pile at the start of the round and when reshuffling the discard pile. This is in 'Deck.cpp' line 47.
+        - `std::shuffle` is used to shuffle the draw pile at the start of the round and when reshuffling the discard pile. This is in `Deck.cpp` line 47.
     * Organization
         - `std::list::sort` is used to sort the list of cards that represents the players hand. This is in  `Player.cpp` line 38 and line 40. 
+
+# Project 2 Additions
+1. Operator Overloading
+    - Overloading the `<` operator for the cards object for sorting on line 28 of `Card.h`
+2. Recursion
+    - The `turn` function of the `game` class is recursive, so the next turn is called at the end of the turn. 
+3. Recursive Sort
+    - Merge sort is implemented to sort the players hand on line 69 of `Player.cpp`
+4. Hashing
+    - Implement HASHMAP for phase requirements (Monday's job)
+5. Trees
+    - A tree is used to sort the players hand by color. This isn't really how a tree should be used (I am filling a tree, then reading from it in order, then deleting it as a sorting algorithm), but it shows how it works. It is in the `treeSort` function on line 122 in `Player.cpp`
+
 
 # Documentation
 

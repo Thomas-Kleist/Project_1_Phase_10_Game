@@ -16,6 +16,17 @@
 Game::Game() {    
     player1 = new Player();
     player2 = new Player();
+    
+    phaseNameMap.insert("0", "You are on Phase 1: 2 Sets of 3");
+    phaseNameMap.insert("1", "You are on Phase 2: 1 Set of 3 + 1 Run of 4");
+    phaseNameMap.insert("2", "You are on Phase 3: 1 Set of 4 + 1 Run of 4");
+    phaseNameMap.insert("3", "You are on Phase 4: 1 Run of 7");
+    phaseNameMap.insert("4", "You are on Phase 5: 1 Run of 8");
+    phaseNameMap.insert("5", "You are on Phase 6: 1 Run of 9");
+    phaseNameMap.insert("6", "You are on Phase 7: 2 Sets of 4");
+    phaseNameMap.insert("7", "You are on Phase 8: 7 Cards of 1 Color");
+    phaseNameMap.insert("8", "You are on Phase 9: 1 Set of 5 + 1 Set of 2");
+    phaseNameMap.insert("9", "You are on Phase 10: 1 Set of 5 + 1 Set of 3");
 }
 
 void Game::setupRound() {
@@ -220,7 +231,7 @@ bool Game::hit(int player) {
     }
 }
 
-bool Game::turn(int player) {
+void Game::turn(int player) {
     Player *currentPlayer = (player == 1)?player1:player2;
 
     Display::PrintBold("Player ");
@@ -269,7 +280,14 @@ bool Game::turn(int player) {
                     
                     success = true;
                 } if (choice == "Discard") {
-                    return discard(player);
+                    bool skip = discard(player);
+                    if (!skip) {
+                        turn((player==1)?2:1);
+                        return;
+                    } else {
+                        turn(player);
+                        return;
+                    }
                 }
             }
         } else {
@@ -296,19 +314,26 @@ bool Game::turn(int player) {
                     
                     if (currentPlayer->handEmpty()) {
                         endRound();
-                        return false;
+                        turn((player==1)?2:1);
+                        return;
                     }
                     
                     success = true;
                 } if (choice == "Discard") {
                     bool toReturn = discard(player);
                     if (currentPlayer->handEmpty()) endRound();
-                    return toReturn;
+                    if (!toReturn) {
+                        turn((player==1)?2:1);
+                        return;
+                    } else {
+                        turn(player);
+                        return;
+                    }
                 }
             }
         }
     }
-    return false;
+    return;
 }
 
 void Game::endRound() {
@@ -354,51 +379,8 @@ void Game::endRound() {
 }
 
 void Game::printPhase(int phase) {
-    switch(phase) {
-        case 0:
-            Display::Print("You are on Phase 1: 2 Sets of 3");
-            Display::NewLine();
-            break;
-        case 1:
-            Display::Print("You are on Phase 2: 1 Set of 3 + 1 Run of 4");
-            Display::NewLine();
-            break;
-        case 2:
-            Display::Print("You are on Phase 3: 1 Set of 4 + 1 Run of 4");
-            Display::NewLine();
-            break;
-        case 3:
-            Display::Print("You are on Phase 4: 1 Run of 7");
-            Display::NewLine();
-            break;
-        case 4:
-            Display::Print("You are on Phase 5: 1 Run of 8");
-            Display::NewLine();
-            break;
-        case 5:
-            Display::Print("You are on Phase 6: 1 Run of 9");
-            Display::NewLine();
-            break;
-        case 6:
-            Display::Print("You are on Phase 7: 2 Sets of 4");
-            Display::NewLine();
-            break;
-        case 7:
-            Display::Print("You are on Phase 8: 7 Cards of 1 Color");
-            Display::NewLine();
-            break;
-        case 8:
-            Display::Print("You are on Phase 9: 1 Set of 5 + 1 Set of 2");
-            Display::NewLine();
-            break;
-        case 9:
-            Display::Print("You are on Phase 10: 1 Set of 5 + 1 Set of 3");
-            Display::NewLine();
-            break;
-        default:
-            // code block
-            break;
-   }
+    Display::Print(phaseNameMap.get(std::to_string(phase)));
+    Display::NewLine();
 }
 
 void Game::printActivePhases() {

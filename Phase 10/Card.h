@@ -24,6 +24,13 @@ public:
     int getPointValue() {if (faceValue <= 12) return 5; if (faceValue == 13) return 25; if (faceValue == 14) return 15; return 0; }
     void setPhaseValue(int value) { phaseValue = value; }
     int getPhaseValue() { return phaseValue; }
+    
+    operator<(Card obj) {
+        if (getFaceValue() < obj.getFaceValue()) return true;
+        if (getFaceValue() == obj.getFaceValue() && getColorNum() < obj.getColorNum()) return true;
+        return false;
+    }
+    
     ~Card();
 private:
     int faceValue;

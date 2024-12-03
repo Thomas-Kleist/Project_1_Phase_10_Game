@@ -11,6 +11,7 @@
       <itemPath>Display.h</itemPath>
       <itemPath>Game.h</itemPath>
       <itemPath>Group.h</itemPath>
+      <itemPath>HashMap.h</itemPath>
       <itemPath>Phase.h</itemPath>
       <itemPath>Player.h</itemPath>
       <itemPath>Run.h</itemPath>
@@ -81,6 +82,8 @@
       </item>
       <item path="Group.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="HashMap.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="Phase.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Phase.h" ex="false" tool="3" flavor2="0">
@@ -141,6 +144,8 @@
       <item path="Group.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="Group.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="HashMap.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Phase.cpp" ex="false" tool="1" flavor2="0">
       </item>

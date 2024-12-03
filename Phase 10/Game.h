@@ -12,12 +12,14 @@
 #include "Player.h"
 #include "Phase.h"
 #include <list>
+#include "HashMap.h"
+#include <string>
 
 class Game {
 public:
     Game();
     virtual ~Game();
-    bool turn(int);
+    void turn(int);
     void setupRound();
     void endRound();
     void drawFromPile(int);
@@ -33,6 +35,7 @@ private:
     Player *player2;
     Deck *deck;
     std::list<Phase*> activePhases;
+    HashMap<std::string> phaseNameMap;
 };
 
 #endif /* GAME_H */

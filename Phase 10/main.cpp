@@ -21,12 +21,7 @@ int main(int argc, char** argv) {
     game->setupRound();
     
     int playerTurn = 1;
-    while (true) {
-        bool skip = game->turn(playerTurn);
-        if (!skip) {
-            playerTurn = (playerTurn==1)?2:1;
-        }
-    }
+    game->turn(playerTurn);
     
     return 0;
 }
