@@ -1,7 +1,7 @@
 # Introduction
 Phase 10 is a groups and runs based card game where players compete to put down a specific "Phase" (a defined pair or sets, runs, or cards of one color). That round continues until a player is able to build off of the sets, runs, or cards of one color that have been put down and runs out of cards. The winner of the game is the first person to complete all 10 phases. If both players finish the 10th phase on the same round, who ever has the lowest score wins. 
 
-The development took about 20 hours. Altogether, the code is 1343 lines, comprised of 393 lines of C header files and 950 lines of C++ code. These make up 10 separate classes. 
+The development took about 20 hours for project 1 and an additional 10 for project 2. Altogether, the code is 1517 lines, comprised of 475 lines of C header files and 1042 lines of C++ code. These make up 10 separate classes. 
 
 The code can be found on Github [https://github.com/Thomas-Kleist/Project_1_Phase_10_Game](https://github.com/Thomas-Kleist/Project_1_Phase_10_Game).
 
@@ -9,6 +9,8 @@ The code can be found on Github [https://github.com/Thomas-Kleist/Project_1_Phas
 I approached this design modularly, first by building a card class. Then a display system to show several cards at once in multiple colors. Next, a player class and to hold cards for the player. Next a deck, a way of shuffling, and a way to deal cards to the player. After that, I built a system for players to pick up and discard cards into the appropriate piles. Next, I built a main game class that controls the overall flow of the game and started designing phases for players to lay out cards. Finally, I built a system to hit to play their remaining cards, as well as a system to start and the next round or end the game when a player is out of cards.
 
 Throughout this, I tried to commit the code to Github often, ideally after each feature was developed, so I could easily roll back if something broke, or make a branch to work on a different feature for some time.
+
+For project 2, I looked through the code for places to add the data structures and algorithms.
 
 # Game Rules
 
@@ -48,7 +50,9 @@ The code is organized into several classes, each with distinct roles.
   * Group - This class checks that only sets can be made.
   * Run - This class checks that only runs can be made.
   * ColorPhase - This class checks that only cards of one color are added to the phase.
- 
+* Hash map
+  * A helper class for the hash map used.
+
 # Sample
 
 The following screenshots are a sample of a player drawing a card, then laying down the first phase of the game. 
@@ -63,22 +67,22 @@ The following screenshots are a sample of a player drawing a card, then laying d
     * Sequences
         - `std::list<>` is used to store the hand in player the player class. This is in 'player.h' line 33.
     * Associative Containers
-        - `std::set<std::string>` is used to store the available cards that the player can hit. This is in 'game.cpp' line 166.
+        - `std::set<std::string>` is used to store the available cards that the player can hit. This is in 'game.cpp' line 175.
         - `std::map<std::string, Color>` is used as a map from strings to colors, so we can use the string "Red" to easily get the corresponding ANSI color value. This is in 'color.h' line 33.
     * Container Adapters
         - `std::stack<Card>` is used to the discard pile in the deck class. This is in 'Deck.h' line 31.
         - `std::deque<Card>` is used to store the draw pile in the deck class. This is in 'Deck.h' line 30.
 2. Iterators
-    * `std::list<Phase*>::iterator` is used to access a specific phase in a list of phases. This is in 'Game.cpp' line 194.
-    * `std::list<Phase*>::iterator` is used to fill all the phases in a list. This is in 'Game.cpp' line 134. 
-    * `std::list<Card>::iterator` is used to access a specific card in a list of cards. This is in 'player.cpp' line 58.
+    * `std::list<Phase*>::iterator` is used to access a specific phase in a list of phases. This is in 'Game.cpp' line 203.
+    * `std::list<Phase*>::iterator` is used to fill all the phases in a list. This is in 'Game.cpp' line 143. 
+    * `std::list<Card>::iterator` is used to access a specific card in a list of cards. This is in 'player.cpp' line 125.
 3. Algorithms
     * Non-mutating Algorithms
         - `std::for_each` is used to display all the cards in a list. This is in `Display.h` line 61, 67, 73, 81, 87.
     * Mutating Algorithms
         - `std::shuffle` is used to shuffle the draw pile at the start of the round and when reshuffling the discard pile. This is in `Deck.cpp` line 47.
     * Organization
-        - `std::list::sort` is used to sort the list of cards that represents the players hand. This is in  `Player.cpp` line 38 and line 40. 
+        - `std::list::sort` is used to sort the list of cards that represents the players hand. This is in  `Player.cpp` line 38 and line 40. (This was replaced with a merge sort implementation and a tree for project 2)
 
 # Project 2 Additions
 1. Operator Overloading
@@ -88,7 +92,7 @@ The following screenshots are a sample of a player drawing a card, then laying d
 3. Recursive Sort
     - Merge sort is implemented to sort the players hand on line 69 of `Player.cpp`
 4. Hashing
-    - Implement HASHMAP for phase requirements (Monday's job)
+    - A hash map is used to print the phase the player is on. The hash map is implemented in `HashMap.h`, setup in `Game.cpp` on line 20-29, and used in `Game.cpp` on line 382.
 5. Trees
     - A tree is used to sort the players hand by color. This isn't really how a tree should be used (I am filling a tree, then reading from it in order, then deleting it as a sorting algorithm), but it shows how it works. It is in the `treeSort` function on line 122 in `Player.cpp`
 
@@ -176,12 +180,7 @@ int main(int argc, char** argv) {
     game->setupRound();
     
     int playerTurn = 1;
-    while (true) {
-        bool skip = game->turn(playerTurn);
-        if (!skip) {
-            playerTurn = (playerTurn==1)?2:1;
-        }
-    }
+    game->turn(playerTurn);
     
     return 0;
 }
@@ -215,6 +214,13 @@ public:
     int getPointValue() {if (faceValue <= 12) return 5; if (faceValue == 13) return 25; if (faceValue == 14) return 15; return 0; }
     void setPhaseValue(int value) { phaseValue = value; }
     int getPhaseValue() { return phaseValue; }
+    
+    operator<(Card obj) {
+        if (getFaceValue() < obj.getFaceValue()) return true;
+        if (getFaceValue() == obj.getFaceValue() && getColorNum() < obj.getColorNum()) return true;
+        return false;
+    }
+    
     ~Card();
 private:
     int faceValue;
@@ -223,7 +229,6 @@ private:
 };
 
 #endif /* CARD_H */
-
 ```
 
 ## Card.cpp
@@ -310,7 +315,6 @@ public:
 extern std::map<std::string, Color> COLOR;
 
 #endif /* COLOR_H */
-
 ```
 
 ## Color.cpp
@@ -674,7 +678,6 @@ class Display {
 ```
 
 ## Game.h
-
 ```h 
 /* 
  * File:   Game.h
@@ -690,12 +693,14 @@ class Display {
 #include "Player.h"
 #include "Phase.h"
 #include <list>
+#include "HashMap.h"
+#include <string>
 
 class Game {
 public:
     Game();
     virtual ~Game();
-    bool turn(int);
+    void turn(int);
     void setupRound();
     void endRound();
     void drawFromPile(int);
@@ -711,6 +716,7 @@ private:
     Player *player2;
     Deck *deck;
     std::list<Phase*> activePhases;
+    HashMap<std::string> phaseNameMap;
 };
 
 #endif /* GAME_H */
@@ -736,6 +742,17 @@ private:
 Game::Game() {    
     player1 = new Player();
     player2 = new Player();
+    
+    phaseNameMap.insert("0", "You are on Phase 1: 2 Sets of 3");
+    phaseNameMap.insert("1", "You are on Phase 2: 1 Set of 3 + 1 Run of 4");
+    phaseNameMap.insert("2", "You are on Phase 3: 1 Set of 4 + 1 Run of 4");
+    phaseNameMap.insert("3", "You are on Phase 4: 1 Run of 7");
+    phaseNameMap.insert("4", "You are on Phase 5: 1 Run of 8");
+    phaseNameMap.insert("5", "You are on Phase 6: 1 Run of 9");
+    phaseNameMap.insert("6", "You are on Phase 7: 2 Sets of 4");
+    phaseNameMap.insert("7", "You are on Phase 8: 7 Cards of 1 Color");
+    phaseNameMap.insert("8", "You are on Phase 9: 1 Set of 5 + 1 Set of 2");
+    phaseNameMap.insert("9", "You are on Phase 10: 1 Set of 5 + 1 Set of 3");
 }
 
 void Game::setupRound() {
@@ -744,8 +761,6 @@ void Game::setupRound() {
     
     deck->deal(player1);
     deck->deal(player2);
-    
-    
 }
     
 
@@ -940,7 +955,7 @@ bool Game::hit(int player) {
     }
 }
 
-bool Game::turn(int player) {
+void Game::turn(int player) {
     Player *currentPlayer = (player == 1)?player1:player2;
 
     Display::PrintBold("Player ");
@@ -989,7 +1004,14 @@ bool Game::turn(int player) {
                     
                     success = true;
                 } if (choice == "Discard") {
-                    return discard(player);
+                    bool skip = discard(player);
+                    if (!skip) {
+                        turn((player==1)?2:1);
+                        return;
+                    } else {
+                        turn(player);
+                        return;
+                    }
                 }
             }
         } else {
@@ -1016,19 +1038,26 @@ bool Game::turn(int player) {
                     
                     if (currentPlayer->handEmpty()) {
                         endRound();
-                        return false;
+                        turn((player==1)?2:1);
+                        return;
                     }
                     
                     success = true;
                 } if (choice == "Discard") {
                     bool toReturn = discard(player);
                     if (currentPlayer->handEmpty()) endRound();
-                    return toReturn;
+                    if (!toReturn) {
+                        turn((player==1)?2:1);
+                        return;
+                    } else {
+                        turn(player);
+                        return;
+                    }
                 }
             }
         }
     }
-    return false;
+    return;
 }
 
 void Game::endRound() {
@@ -1074,51 +1103,8 @@ void Game::endRound() {
 }
 
 void Game::printPhase(int phase) {
-    switch(phase) {
-        case 0:
-            Display::Print("You are on Phase 1: 2 Sets of 3");
-            Display::NewLine();
-            break;
-        case 1:
-            Display::Print("You are on Phase 2: 1 Set of 3 + 1 Run of 4");
-            Display::NewLine();
-            break;
-        case 2:
-            Display::Print("You are on Phase 3: 1 Set of 4 + 1 Run of 4");
-            Display::NewLine();
-            break;
-        case 3:
-            Display::Print("You are on Phase 4: 1 Run of 7");
-            Display::NewLine();
-            break;
-        case 4:
-            Display::Print("You are on Phase 5: 1 Run of 8");
-            Display::NewLine();
-            break;
-        case 5:
-            Display::Print("You are on Phase 6: 1 Run of 9");
-            Display::NewLine();
-            break;
-        case 6:
-            Display::Print("You are on Phase 7: 2 Sets of 4");
-            Display::NewLine();
-            break;
-        case 7:
-            Display::Print("You are on Phase 8: 7 Cards of 1 Color");
-            Display::NewLine();
-            break;
-        case 8:
-            Display::Print("You are on Phase 9: 1 Set of 5 + 1 Set of 2");
-            Display::NewLine();
-            break;
-        case 9:
-            Display::Print("You are on Phase 10: 1 Set of 5 + 1 Set of 3");
-            Display::NewLine();
-            break;
-        default:
-            // code block
-            break;
-   }
+    Display::Print(phaseNameMap.get(std::to_string(phase)));
+    Display::NewLine();
 }
 
 void Game::printActivePhases() {
@@ -1261,8 +1247,80 @@ Group::~Group() {
 }
 ```
 
-## Phase.h
+## HashMap.h
+``` h
+/* 
+ * File:   HashMap.h
+ * Author: Thomas Kleist
+ *
+ * Created on December 2, 2024, 11:01 PM
+ */
 
+#ifndef HASHMAP_H
+#define HASHMAP_H
+
+#include <iostream>
+#include <list>
+#include <iterator>
+#include <stdexcept>
+#include <string>
+
+// Template class for HashMap
+template <typename ValueType>
+class HashMap {
+private:
+    // Hash table with separate chaining
+    std::list<std::pair<std::string, ValueType>> table[10];
+    int tableSize = 10;
+
+        // Hash function to map keys to table indices
+    size_t hashFunction(const std::string& key) const {
+        unsigned int b    = 378551;
+        unsigned int a    = 63689;
+        unsigned int hash = 0;
+
+        for(std::size_t i = 0; i < key.length(); i++)
+        {
+           hash = hash * a + key[i];
+           a    = a * b;
+        }
+
+        return hash % tableSize;
+    }
+
+public:
+    // Constructor to initialize HashMap with a specific size
+    HashMap() {
+    }
+
+    // Insert a key-value pair into the map
+    void insert(const std::string& key, const ValueType& value) {
+        size_t index = hashFunction(key);
+        for (auto& pair : table[index]) {
+            if (pair.first == key) {
+                pair.second = value;  // Update existing key-value pair
+                return;
+            }
+        }
+        table[index].emplace_back(key, value);  // Insert new key-value pair
+    }
+
+    // Retrieve a value by its key
+    ValueType get(const std::string& key) const {
+        size_t index = hashFunction(key);
+        for (const auto& pair : table[index]) {
+            if (pair.first == key) {
+                return pair.second;
+            }
+        }
+        throw std::out_of_range("Key not found.");
+    }
+};
+
+#endif /* HASHMAP_H */
+```
+
+## Phase.h
 ``` h 
 /* 
  * File:   Phase.h
@@ -1393,7 +1451,7 @@ private:
 #include <list>
 #include <algorithm>    // std::random_shuffle
 #include <random>
-
+#include <iostream>
 
 Player::Player() {
     score = 0;
@@ -1416,11 +1474,113 @@ bool colorCompare(Card &card1, Card &card2) {
     return false;
 }
 
+// Function to merge two sorted lists
+std::list<Card> merge(std::list<Card>& left, std::list<Card>& right) {
+    std::list<Card> result;
+    auto itLeft = left.begin();
+    auto itRight = right.begin();
+
+    // Merge the two lists into the result list
+    while (itLeft != left.end() && itRight != right.end()) {
+        if (*itLeft < *itRight) {
+            result.push_back(*itLeft);
+            ++itLeft;
+        } else {
+            result.push_back(*itRight);
+            ++itRight;
+        }
+    }
+
+    // Append any remaining elements from left or right
+    result.insert(result.end(), itLeft, left.end());
+    result.insert(result.end(), itRight, right.end());
+
+    return result;
+}
+
+// Function to split a list into two halves
+void split(std::list<Card>& original, std::list<Card>& left, std::list<Card>& right) {
+    auto it = original.begin();
+    std::advance(it, original.size() / 2);
+    left.splice(left.end(), original, original.begin(), it);
+    right.splice(right.end(), original, it, original.end());
+}
+
+// Function to perform merge sort on a list
+std::list<Card> mergeSort(std::list<Card> lst) {
+    if (lst.size() <= 1) {
+        return lst;  // Base case: if the list has 1 or 0 elements, it's already sorted
+    }
+
+    std::list<Card> left, right;
+    split(lst, left, right);  // Split the list into two halves
+
+    // Recursively sort the two halves and merge them
+    left = mergeSort(left);
+    right = mergeSort(right);
+
+    // Merge the two sorted halves
+    return merge(left, right);
+}
+
+struct Node {
+    Card* data;
+    Node* left;
+    Node* right;
+
+    Node(Card *value) {
+        data = value;
+        left = right = nullptr;
+    }
+};
+
+Node* insertTree(Node *root, Card *data) {
+    if (root == nullptr) {
+        root = new Node(data);
+        return root;
+    }
+    
+    if (colorCompare(*data, *(root->data))) {
+        root->left = insertTree(root->left, data);
+    } else {
+        root->right = insertTree(root->right, data);
+    }
+    
+    return root;
+}
+
+std::list<Card> readTree(Node *root, std::list<Card> lst) {
+    if (root == nullptr) {
+        return lst;
+    }
+    
+    lst = readTree(root->left, lst);
+    lst.push_back(*(root->data));
+    lst = readTree(root->right, lst);
+    return lst;
+}
+
+std::list<Card> treeSort(std::list<Card> lst) {
+    Node *root = nullptr;
+    
+    for (std::list<Card>::iterator it = lst.begin(); it != lst.end(); ++it) {
+        root = insertTree(root, &(*it));
+    }
+    std::cout << std::endl;
+    
+    std::list<Card> newList;
+    lst = readTree(root, newList);
+        
+    return lst;
+}
+
+
+
 void Player::sortHand() {
     if (phase == 7) {
-        hand.sort(colorCompare);
+        hand = treeSort(hand);
     } else {
-        hand.sort(cardCompare);
+        hand = mergeSort(hand);
     }
 }
 
@@ -1452,7 +1612,6 @@ void Player::endRound() {
     }
     layDown = false;
 }
-
 ```
 
 ## Run.h
@@ -1481,8 +1640,6 @@ private:
 };
 
 #endif /* RUN_H */
-
-
 ```
 
 ## Run.cpp

@@ -35,8 +35,6 @@ void Game::setupRound() {
     
     deck->deal(player1);
     deck->deal(player2);
-    
-    
 }
     
 
